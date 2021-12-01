@@ -1,21 +1,66 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+//App.js 
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>salut !</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import React, {useState} from "react";
+import View from "react-native-web/dist/vendor/react-native/Animated/components/AnimatedView";
+import {ScrollView, StatusBar, StyleSheet, SafeAreaView, Text} from "react-native";
+import CustomPicker from "./Components/Picker";
+import TxtInput from "./Components/TxtImput";
+
+const App = () => {
+    const [Press, setPress] = useState(0);
+    return (
+            <SafeAreaView style={Styles.container}>
+                <ScrollView>
+                    <View style={Styles.container}>
+                        <Text style={Styles.title}>
+                            Informations
+                        </Text>
+                        <TxtInput
+                            label={"Nom"}
+                            style={Styles.input}
+                        />
+                        <TxtInput
+                            style={Styles.input}
+                            label={"Prénom"}
+                        />
+                        <CustomPicker
+                            label="Situation"
+                            data={SituationPicker}
+                            currentIndex={Press}
+                            onSelected={setPress}
+                        />
+                        <Text style={Styles.title}>
+                            Fichiers à envoyer
+                        </Text>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const SituationPicker = [
+    "Etudiant",
+    "Salarié",
+    "Retraité",
+    "En Recherche d'emploi",
+];
+
+const Styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+        backgroundColor: "#ecf0f1",
+        padding: 8,
+    },
+    input: {
+        marginVertical: 30
+    },
+    title: {
+        fontWeight: "700",
+        marginTop: 30,
+        marginBottom: 10,
+        marginLeft: 6
+    },
 });
+
+export default App;

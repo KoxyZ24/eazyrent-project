@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TextInput } from 'react-native-paper';
+import {StyleSheet} from "react-native";
 
 const TxtInput = ({label}) => {
     const [text, setText] = React.useState('');

@@ -22,6 +22,10 @@ const App = () => {
                         style={Styles.input}
                         label={"Prénom"}
                     />
+                    <TxtInput
+                        style={Styles.input}
+                        label={"Numéro de Téléphone"}
+                    />
                     <CustomPicker
                         label="Situation"
                         data={SituationPicker}
@@ -35,6 +39,7 @@ const App = () => {
             </ScrollView>
         </SafeAreaView>
     );
+
 }
 
 const SituationPicker = [

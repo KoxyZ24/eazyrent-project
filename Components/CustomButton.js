@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const CustomButton = ({label}) => {
-    const [count, setCount] = useState(0);
-    const onPress = () => setCount(prevCount => prevCount + 1);
-
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={onPress}
             >
                 <Text>{label}</Text>
             </TouchableOpacity>

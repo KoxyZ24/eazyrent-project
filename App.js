@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ScrollView, StatusBar, StyleSheet, SafeAreaView, Text, View, Button} from "react-native";
+import {ScrollView, StatusBar, StyleSheet, SafeAreaView, Text, View, Button, TouchableOpacity} from "react-native";
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CustomPicker from "./Components/Picker";
@@ -11,15 +11,17 @@ function HomeScreen({ navigation }) {
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text>Home Screen</Text>
-            <Button
-                title="Continue"
+            <TouchableOpacity
+                style={Styles.button}
                 onPress={() => navigation.navigate('Information personnelles')}
-            />
+            >
+                <Text>Continue</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
-const Formulaire1 = () => {
+const Formulaire1 = ({ navigation }) => {
     const [Press, setPress] = useState(0);
     return (
         <SafeAreaView style={Styles.container}>
@@ -63,13 +65,27 @@ const Formulaire1 = () => {
                         currentIndex={Press}
                         onSelected={setPress}
                     />
-                    <CustomButton
-                        label="Etape suivante"
-                    />
+                    <TouchableOpacity
+                        style={Styles.button}
+                        onPress={() => navigation.navigate('Choose your documents')}
+                    >
+                        <Text>etape suivante</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
+}
+
+const Formulaire2 = ({ navigation }) => {
+    return (
+            <TouchableOpacity
+                style={Styles.button}
+                onPress={() => navigation.navigate('Information personnelles')}
+            >
+                <Text>Continue</Text>
+            </TouchableOpacity>
+    )
 }
 
 const SituationPicker = [
@@ -87,6 +103,7 @@ function App() {
             <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Home" component={HomeScreen}/>
                 <Stack.Screen name="Information personnelles" component={Formulaire1}/>
+                <Stack.Screen name="Choose your documents" component={Formulaire2}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -121,6 +138,14 @@ const Styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 5,
+    },
+    button: {
+        height: 40,
+        margin: 12,
+        padding: 10,
+        borderRadius: 20,
+        backgroundColor: "#E5E5E5",
+        alignItems: "center",
     },
 });
 

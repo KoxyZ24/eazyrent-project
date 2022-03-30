@@ -1,15 +1,13 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, TextInput } from "react-native";
 
-const CustomNumberInput = ({label}) => {
-    const [number, onChangeNumber] = React.useState(null);
-
+const CustomNumberInput = ({label,onChange,value}) => {
     return (
         <SafeAreaView>
             <TextInput
                 style={styles.input}
-                onChangeText={onChangeNumber}
-                value={number}
+                onChange={onChange}
+                value={value}
                 placeholder={label}
                 keyboardType="numeric"
             />

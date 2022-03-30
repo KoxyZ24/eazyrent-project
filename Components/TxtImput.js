@@ -1,14 +1,12 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, TextInput } from "react-native";
+import {SafeAreaView, StyleSheet, TextInput} from "react-native";
 
-const CustomTextInput = ({label}) => {
-    const [text, onChangeText] = React.useState("");
-
+const CustomTextInput = ({label,onChange,text}) => {
     return (
         <SafeAreaView>
             <TextInput
                 style={styles.input}
-                onChangeText={onChangeText}
+                onChange={onChange}
                 value={text}
                 placeholder={label}
             />

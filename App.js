@@ -1,20 +1,16 @@
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import {
     StatusBar,
     StyleSheet,
     Text,
     View,
     TouchableOpacity,
-    Image,
-    ImageBackground, Button
+    ImageBackground,
+    TextInput, Alert
 } from "react-native";
-import DocumentPicker from 'react-native-document-picker'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CustomPicker from "./Components/Picker";
-import CustomTextInput from "./Components/TxtImput";
-import CustomNumberInput from "./Components/NumberInput";
-import {SafeAreaView} from "react-native-web";
 
 function HomeScreen({navigation}) {
     return (
@@ -35,34 +31,53 @@ function HomeScreen({navigation}) {
 }
 
 const Formulaire1 = ({navigation}) => {
+    const showAlert = (message) =>
+        Alert.alert(
+            "Informations incomplètes",
+            message,
+            [{
+                text: "Continue",
+                style: "cancel",
+            },
+            ],
+            {
+                cancelable: true,
+            }
+        )
     const [Press, setPress] = useState(0);
-    const [nom, setLastname] = React.useState("");
-    const [prenom, setName] = React.useState("");
-    const [number, setNumber] = React.useState("");
+    const [lastname, onChangeLastName] = React.useState("");
+    const [firstName, onChangeFirstName] = React.useState("");
+    const [number, onChangeNumber] = React.useState("");
     const SituationPicker = [
         "Etudiant",
         "Salarié",
         "Retraité",
         "Intérimaire",
     ];
-    const onChangeNom = (e) => {
-        setLastname(e.target.value)
-    }
-    const onChangePrenom = (e) => {
-        setName(e.target.value)
-    }
-    const onChangeNumber = (e) => {
-        setNumber(e.target.value)
-    }
     const changePage = () => {
-        console.log(nom, prenom, number, SituationPicker[Press])
         const regex = new RegExp(/(\d{2}){5}/)
-        if ((nom !== "") && (prenom !== "") && (number.match(regex))) {
-            navigation.navigate('Choose your documents')
-            console.log("Done")
+        if (lastname !== "") {
+            if (firstName !== "") {
+                if (number.match(regex)) {
+                    navigation.navigate('Choose your documents')
+                    fetch('https://en0nai8j57zi6j.x.pipedream.net/', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                name: firstName,
+                                lastname: lastname,
+                                number: number,
+                                situation: SituationPicker[Press]
+                            })
+                        }
+                    )
+                } else {
+                    showAlert("Veuillez entrer un numéro de téléphone valide")
+                }
+            } else {
+                showAlert("Veuillez entrer votre prénom")
+            }
         } else {
-            console.log("Wrong information")
-            console.log(number.match(regex))
+            showAlert("Veuillez entrer votre nom")
         }
     }
     return (
@@ -89,22 +104,25 @@ const Formulaire1 = ({navigation}) => {
                 <Text style={Styles.h2}>
                     Veuillez entrer vos informations
                 </Text>
-                <CustomTextInput
-                    style={{color: 'green',}}
-                    onChange={onChangeNom}
-                    value={nom}
-                    label={"Nom"}
+                <TextInput
+                    style={Styles.Textinput}
+                    onChangeText={text => onChangeLastName(text)}
+                    value={lastname}
+                    placeholder={"Nom"}
+                    autoFocus={true}
                 />
-
-                <CustomTextInput
-                    onChange={onChangePrenom}
-                    value={prenom}
-                    label={"Prénom"}
+                <TextInput
+                    style={Styles.Textinput}
+                    onChangeText={text => onChangeFirstName(text)}
+                    value={firstName}
+                    placeholder={"Prénom"}
                 />
-                <CustomNumberInput
-                    onChange={onChangeNumber}
+                <TextInput
+                    style={Styles.Textinput}
+                    onChangeText={text => onChangeNumber(text)}
                     value={number}
-                    label={"Numéro de Téléphone"}
+                    placeholder={"Numéro de téléphone"}
+                    keyboardType="numeric"
                 />
             </View>
             <View style={Styles.pickerContainer}>
@@ -119,19 +137,22 @@ const Formulaire1 = ({navigation}) => {
                 style={Styles.button}
                 onPress={changePage}
             >
-                <Text>etape suivante</Text>
+                <Text style={{fontWeight: 'bold'}}>Etape suivante</Text>
             </TouchableOpacity>
         </View>
     );
 }
 
 const Formulaire2 = () => {
-    const [file, setFile] = useState("");
-    const onChangeFile = (e) => {
-        setFile(e.target.value)
-    }
     return (
-        <input type="file" onChange={onChangeFile} value={file}/>
+        <View style={{
+            alignItems: "center",
+            justifyContent: "center"
+        }}>
+            <Text>
+                Informations send to https://requestbin.com/r/en0nai8j57zi6j/276ecYb9bfO0PfAejjmZmDWUvjY
+            </Text>
+        </View>
     );
 }
 
@@ -212,7 +233,7 @@ const Styles = StyleSheet.create({
         marginLeft: 5,
     },
     h3: {
-        paddingTop:10,
+        paddingTop: 10,
         fontWeight: "700",
         fontSize: 16,
     },
@@ -223,6 +244,16 @@ const Styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "#E5E5E5",
         alignItems: "center",
+    },
+    Textinput: {
+        height: 40,
+        marginLeft: 5,
+        margin: 8,
+        borderWidth: 1,
+        padding: 8,
+        paddingLeft: 16,
+        borderRadius: 20,
+        fontSize: 20,
     },
 });
 
